@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<style>
+
+</style>
+</head>
+<body>
+<div class="chart">
+  <!-- // const data = [4, 8, 15, 16, 23, 42];
+  // const colors = ["violet", "lightblue", "limegreen", "yellow", "orange", "red"];
+  // const width = 500,
+  //      height = 16;
+  // const x = d3.scaleLinear()
+  //  .domain([0, d3.max(data)])
+  //  .range([0, width]);
+  // // Create SVG element
+  // // We will group each rect and corresponding text in a group (g)
+  // const g = d3.select("svg")
+  //    .attr("height", width)
+  //    .attr("width", height * data.length)
+  //    .selectAll("g")
+  //    .data(data)
+  //    .enter().append("g")
+  //    .attr("transform", function(d, i) { return "translate(" + i * height + ", " + (width - x(d)) + ")"; });
+  //  g.append("rect")
+  //   .attr("fill", function(d) { return colors[data.indexOf(d)]; })
+  //   .attr("height", x)
+  //   .attr("width", height);
+  //  g.append("text")
+  //   .attr("x", 0)
+  //   .attr("y", 0)
+  //   .attr("dy", 0)
+  //   .text(function(d) { return d; }); -->
+
+<svg width='960' height="500"></svg>
+<script>
+
+const data = [4, 8, 15, 16, 23, 42];
+const colors = ["violet", "lightblue", "limegreen", "yellow", "orange", "red"];
+
+var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height"),
+    radius = Math.min(width, height) / 2,
+    g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+var color = d3.scaleOrdinal(colors);
+
+var pie = d3.pie()
+  .sort(null)
+  .value(function(d) {
+    return d;
+  });
+
+var path = d3.arc()
+    .outerRadius(radius - 10)
+    .innerRadius(0);
+
+var label = d3.arc()
+    .outerRadius(radius - 40)
+    .innerRadius(radius - 40);
+
+var arc = g.selectAll(".arc")
+    .data(pie(data))
+    .enter().append("g")
+      .attr("class", "arc");
+
+  arc.append("path")
+      .attr("d", path)
+      .attr("fill", function(d) { return color(d.data); });
+
+  arc.append("text")
+      .attr("transform", function(d) { return "translate(" + label.centroid(d) + ")"; })
+      .attr("dy", "0.35em")
+      .text(function(d) { return d.data; });
+
+</script>
+</div>
+</body>
+</html>
